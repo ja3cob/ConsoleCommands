@@ -1,60 +1,66 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ConsoleCommands;
-
-public static class CC
+namespace ConsoleCommands
 {
-    private static readonly Dictionary<string, CommandBase> Commands = [];
-
-    static CC()
+    public static class CC
     {
-        var types = Assembly.GetExecutingAssembly()
-            .GetTypes()
-            .Where(t => typeof(CommandBase).IsAssignableFrom(t) && t.IsAbstract == false);
+        private static readonly Dictionary<string, CommandBase> Commands = new Dictionary<string, CommandBase>();
 
-        foreach (var type in types)
+        static CC()
         {
-            if (Activator.CreateInstance(type) is CommandBase instance)
+            var types = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(t => typeof(CommandBase).IsAssignableFrom(t) && t.IsAbstract == false);
+
+            foreach (var type in types)
             {
-                Commands[type.Name.ToLower()] = instance;
+                if (Activator.CreateInstance(type) is CommandBase instance)
+                {
+                    Commands[type.Name.ToLower()] = instance;
+                }
             }
         }
-    }
 
-    public static async void ReadCommands(IServiceProvider provider)
-    {
-        await Task.Run(() =>
+        public static async void ReadCommands(IServiceProvider provider)
         {
-            while (provider.GetRequiredService<CancellationTokenSource>().IsCancellationRequested == false)
+            await Task.Run(() =>
             {
-                string[]? input = Console.ReadLine()?.Split(' ');
-                if (input == null)
+                while (provider.GetRequiredService<CancellationTokenSource>().IsCancellationRequested == false)
                 {
-                    //Console.ReadLine() returns null when nothing more can be read from the terminal, so the service is terminated
-                    return;
-                }
-
-                if (Commands.TryGetValue(input[0], out var command) == false)
-                {
-                    Console.WriteLine("Commands:");
-                    foreach (var dictCommand in Commands.Values)
+                    string[] input = Console.ReadLine()?.Split(' ');
+                    if (input == null)
                     {
-                        Console.WriteLine($"{dictCommand.Syntax} - {dictCommand.Description}");
+                        //Console.ReadLine() returns null when nothing more can be read from the terminal, so the service is terminated
+                        return;
                     }
 
-                    continue;
-                }
+                    if (Commands.TryGetValue(input[0], out var command) == false)
+                    {
+                        Console.WriteLine("Commands:");
+                        foreach (var dictCommand in Commands.Values)
+                        {
+                            Console.WriteLine($"{dictCommand.Syntax} - {dictCommand.Description}");
+                        }
 
-                try
-                {
-                    Console.WriteLine(command.Execute(provider, input[1..]));
+                        continue;
+                    }
+
+                    try
+                    {
+                        Console.WriteLine(command.Execute(provider, input.Skip(1).ToArray()));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error executing command: " + ex.Message);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error executing command: " + ex.Message);
-                }
-            }
-        });
+            });
+        }
     }
 }
