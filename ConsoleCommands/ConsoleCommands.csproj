@@ -3,13 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>ConsoleCommands</Title>
-    <Company>Jakub Becker</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Description>An easy to use .NET library for reading and executing console commands in dependency injection projects</Description>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <VersionPrefix>1.0.2</VersionPrefix>
+    <VersionPrefix>1.0.3</VersionPrefix>
     <RepositoryUrl>https://github.com/ja3cob/ConsoleCommands</RepositoryUrl>
+    <Authors>Jakub Becker</Authors>
   </PropertyGroup>
 
   <ItemGroup>
