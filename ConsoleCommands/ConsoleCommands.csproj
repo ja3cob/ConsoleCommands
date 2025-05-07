@@ -5,11 +5,11 @@
     <Title>ConsoleCommands</Title>
     <Company>Jakub Becker</Company>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/ja3cob/ConsoleCommands</PackageProjectUrl>
     <Description>An easy to use .NET library for reading and executing console commands in dependency injection projects</Description>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
+    <RepositoryUrl>https://github.com/ja3cob/ConsoleCommands</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
