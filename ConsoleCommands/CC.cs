@@ -14,9 +14,13 @@ namespace ConsoleCommands
 
         static CC()
         {
-            var types = Assembly.GetExecutingAssembly()
-                .GetTypes()
+            var types = Assembly.GetEntryAssembly()
+                ?.GetTypes()
                 .Where(t => typeof(CommandBase).IsAssignableFrom(t) && t.IsAbstract == false);
+            if (types == null)
+            {
+                return;
+            }
 
             foreach (var type in types)
             {
