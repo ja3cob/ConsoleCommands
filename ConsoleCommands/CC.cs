@@ -35,7 +35,7 @@ namespace ConsoleCommands
         {
             await Task.Run(() =>
             {
-                while (provider.GetRequiredService<CancellationTokenSource>().IsCancellationRequested == false)
+                while ((provider.GetService<CancellationTokenSource>()?.IsCancellationRequested ?? false) == false)
                 {
                     string[] input = Console.ReadLine()?.Split(' ');
                     if (input == null)
