@@ -10,26 +10,26 @@ An easy to use .NET library for reading and executing console commands in depend
 
 # Example
 
-	Example command **AddUser**:
+  Example command **AddUser**:
 
-    >     internal class AddUser : CommandBase
-    >     {
-    >         public override string Syntax => base.Syntax + " <username>";
-    >         public override string Description => "add a new user";
-    >     
-    >         public override string Execute(IServiceProvider provider, string[] args)
-    >         {
-    >             if (args.Length != 1 || string.IsNullOrWhiteSpace(args[0]))
-    >             {
-    >                 return Usage;
-    >             }
-    >     
-    >             Console.WriteLine("password: ");
-    >             string? password = Console.ReadLine();
-    >     
-    >             using var scope = provider.CreateScope();
-    >             scope.ServiceProvider.GetRequiredService<AuthService>().Register(new RegisterRequest(args[0], password ?? ""));
-    >     
-    >             return "success";
-    >         }
-    >     }
+  >     internal class AddUser : CommandBase
+  >     {
+  >         public override string Syntax => base.Syntax + " <username>";
+  >         public override string Description => "add a new user";
+  >     
+  >         public override string Execute(IServiceProvider provider, string[] args)
+  >         {
+  >             if (args.Length != 1 || string.IsNullOrWhiteSpace(args[0]))
+  >             {
+  >                 return Usage;
+  >             }
+  >     
+  >             Console.WriteLine("password: ");
+  >             string? password = Console.ReadLine();
+  >     
+  >             using var scope = provider.CreateScope();
+  >             scope.ServiceProvider.GetRequiredService<AuthService>().Register(new RegisterRequest(args[0], password ?? ""));
+  >     
+  >             return "success";
+  >         }
+  >     }
